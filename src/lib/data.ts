@@ -120,6 +120,8 @@ export const orders: Order[] = [
     pickupTime: '2024-07-29T10:00:00.000Z',
     status: 'completed',
     createdAt: '2024-07-29T08:00:00.000Z',
+    proofPhotoUrl: 'https://picsum.photos/seed/101/600/400',
+    notes: 'Customer requested contactless pickup.'
   },
   {
     id: 'order-102',
@@ -132,6 +134,7 @@ export const orders: Order[] = [
     status: 'assigned',
     pricePerKg: 15,
     createdAt: '2024-07-28T12:00:00.000Z',
+    notes: 'Third floor, no elevator. Bring help.'
   },
   {
     id: 'order-103',
@@ -157,6 +160,7 @@ export const orders: Order[] = [
     pickupTime: '2024-07-26T12:00:00.000Z',
     status: 'completed',
     createdAt: '2024-07-26T12:00:00.000Z',
+    proofPhotoUrl: 'https://picsum.photos/seed/104/600/400',
   },
   {
     id: 'order-105',
@@ -180,6 +184,7 @@ export const orders: Order[] = [
     pickupTime: '2024-07-25T12:00:00.000Z',
     status: 'cancelled',
     createdAt: '2024-07-25T12:00:00.000Z',
+    notes: 'Order cancelled by customer. No longer needed.'
   },
 ];
 

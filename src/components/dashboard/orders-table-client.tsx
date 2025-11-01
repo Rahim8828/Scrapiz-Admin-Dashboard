@@ -4,7 +4,13 @@ import * as React from "react"
 import {
     MoreHorizontal,
     MapPin,
-    Bot
+    Bot,
+    Truck,
+    CheckCircle,
+    XCircle,
+    Clock,
+    Phone,
+    Download
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -15,6 +21,10 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu"
 import {
     Table,
@@ -29,6 +39,7 @@ import { users } from "@/lib/data"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
 import { autoAssignAgentToOrder } from "@/ai/flows/auto-assign-agent-to-order"
+import OrderDetailsDialog from "./order-details-dialog"
 
 type OrdersTableClientProps = {
     orders: Order[]
@@ -43,7 +54,10 @@ const statusVariant: { [key: string]: "default" | "secondary" | "destructive" } 
     cancelled: "destructive",
 }
 
-export default function OrdersTableClient({ orders }: OrdersTableClientProps) {
+export default function OrdersTableClient({ orders: initialOrders }: OrdersTableClientProps) {
+    const [orders, setOrders] = React.useState(initialOrders);
+    const [selectedOrder, setSelectedOrder] = React.useState<Order | null>(null);
+    const [isDetailsOpen, setIsDetailsOpen] = React.useState(false);
     const { toast } = useToast()
 
     const handleAutoAssign = async (order: Order) => {
@@ -53,11 +67,15 @@ export default function OrdersTableClient({ orders }: OrdersTableClientProps) {
                 description: `Finding the best agent for order #${order.id}.`,
             });
             const result = await autoAssignAgentToOrder({ orderId: order.id, pickupAddress: order.pickupAddress });
+            
+            // Update order state locally
+            setOrders(prevOrders => prevOrders.map(o => o.id === order.id ? {...o, agentId: result.agentId, status: 'assigned'} : o));
+
             toast({
                 title: "✅ Agent Assigned",
                 description: `Agent ${result.agentId} assigned to order #${order.id}. Reason: ${result.reason}`,
             });
-            // Here you would typically update the order state
+            
         } catch (error) {
             console.error(error);
             toast({
@@ -68,8 +86,21 @@ export default function OrdersTableClient({ orders }: OrdersTableClientProps) {
         }
     }
 
+    const handleUpdateStatus = (orderId: string, status: Order['status']) => {
+        setOrders(prevOrders => prevOrders.map(o => o.id === orderId ? {...o, status} : o));
+        toast({
+            title: "Status Updated",
+            description: `Order #${orderId} has been updated to "${status.replace(/_/g, ' ')}".`,
+        });
+    }
+
+    const handleViewDetails = (order: Order) => {
+        setSelectedOrder(order);
+        setIsDetailsOpen(true);
+    }
 
     return (
+        <>
         <Table>
             <TableHeader>
                 <TableRow>
@@ -133,11 +164,42 @@ export default function OrdersTableClient({ orders }: OrdersTableClientProps) {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
                                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                                        <DropdownMenuItem>Update Status</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleViewDetails(order)}>View Details</DropdownMenuItem>
+                                        <DropdownMenuItem disabled={!seller}>
+                                            <Phone className="mr-2 h-4 w-4" />
+                                            Contact Customer
+                                        </DropdownMenuItem>
                                         <DropdownMenuItem onClick={() => handleAutoAssign(order)} disabled={!!order.agentId}>
                                             <Bot className="mr-2 h-4 w-4"/>
                                             Auto-assign Agent
+                                        </DropdownMenuItem>
+                                         <DropdownMenuSub>
+                                            <DropdownMenuSubTrigger>
+                                                <Truck className="mr-2 h-4 w-4" />
+                                                Update Status
+                                            </DropdownMenuSubTrigger>
+                                            <DropdownMenuSubContent>
+                                                <DropdownMenuItem onClick={() => handleUpdateStatus(order.id, 'pending')}>
+                                                    <Clock className="mr-2 h-4 w-4"/> Pending
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleUpdateStatus(order.id, 'assigned')}>
+                                                    <Bot className="mr-2 h-4 w-4"/> Assigned
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleUpdateStatus(order.id, 'on_the_way')}>
+                                                    <Truck className="mr-2 h-4 w-4"/> On the Way
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleUpdateStatus(order.id, 'completed')}>
+                                                    <CheckCircle className="mr-2 h-4 w-4"/> Completed
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="text-destructive" onClick={() => handleUpdateStatus(order.id, 'cancelled')}>
+                                                    <XCircle className="mr-2 h-4 w-4"/> Cancelled
+                                                </DropdownMenuItem>
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuSub>
+                                        <DropdownMenuSeparator />
+                                         <DropdownMenuItem disabled={!order.totalAmount}>
+                                            <Download className="mr-2 h-4 w-4" />
+                                            Download Invoice
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
@@ -147,5 +209,13 @@ export default function OrdersTableClient({ orders }: OrdersTableClientProps) {
                 })}
             </TableBody>
         </Table>
+        {selectedOrder && (
+             <OrderDetailsDialog 
+                order={selectedOrder}
+                isOpen={isDetailsOpen}
+                onOpenChange={setIsDetailsOpen}
+             />
+        )}
+        </>
     )
 }

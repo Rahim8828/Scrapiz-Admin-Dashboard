@@ -40,6 +40,7 @@ export interface Order {
   proofPhotoUrl?: string;
   invoiceUrl?: string;
   createdAt: string;
+  notes?: string;
 }
 
 export interface ScrapCategory {
