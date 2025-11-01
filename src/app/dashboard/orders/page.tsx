@@ -1,3 +1,5 @@
+
+'use client';
 import {
   File,
   ListFilter,
@@ -26,10 +28,25 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
-import { orders } from "@/lib/data"
+import { orders as initialOrders, users } from "@/lib/data"
 import OrdersTableClient from "@/components/dashboard/orders-table-client"
+import { useState } from "react";
+import type { Order } from "@/lib/types";
+import NewOrderDialog from "@/components/dashboard/new-order-dialog";
 
 export default function OrdersPage() {
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
+
+  const handleAddOrder = (newOrder: Omit<Order, 'id' | 'createdAt' | 'status'>) => {
+    const newOrderWithId: Order = {
+      ...newOrder,
+      id: `order-${Math.floor(Math.random() * 1000) + 200}`,
+      createdAt: new Date().toISOString(),
+      status: 'pending',
+    };
+    setOrders(prevOrders => [newOrderWithId, ...prevOrders]);
+  };
+
   return (
     <Tabs defaultValue="all">
       <div className="flex items-center">
@@ -68,6 +85,10 @@ export default function OrdersPage() {
               Export
             </span>
           </Button>
+           <NewOrderDialog 
+            sellers={users.filter(u => u.role === 'seller')} 
+            onOrderCreate={handleAddOrder}
+          />
         </div>
       </div>
       <TabsContent value="all">
@@ -96,7 +117,45 @@ export default function OrdersPage() {
           </CardContent>
         </Card>
       </TabsContent>
-      {/* Add more TabsContent for other statuses */}
+       <TabsContent value="assigned">
+        <Card>
+            <CardHeader>
+                <CardTitle>Assigned Orders</CardTitle>
+                <CardDescription>
+                    Orders that have been assigned to an agent.
+                </CardDescription>
+            </CardHeader>
+          <CardContent>
+            <OrdersTableClient orders={orders.filter(o => o.status === 'assigned')} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+       <TabsContent value="completed">
+        <Card>
+            <CardHeader>
+                <CardTitle>Completed Orders</CardTitle>
+                <CardDescription>
+                    Successfully completed orders.
+                </CardDescription>
+            </CardHeader>
+          <CardContent>
+            <OrdersTableClient orders={orders.filter(o => o.status === 'completed')} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <TabsContent value="cancelled">
+        <Card>
+            <CardHeader>
+                <CardTitle>Cancelled Orders</CardTitle>
+                <CardDescription>
+                    Cancelled orders.
+                </CardDescription>
+            </CardHeader>
+          <CardContent>
+            <OrdersTableClient orders={orders.filter(o => o.status === 'cancelled')} />
+          </CardContent>
+        </Card>
+      </TabsContent>
     </Tabs>
   )
 }
