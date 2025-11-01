@@ -15,6 +15,7 @@ import type { Payment } from "@/lib/types"
 import { users } from "@/lib/data"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
+import { CreditCard } from "lucide-react"
 
 type PaymentsTableClientProps = {
     payments: Payment[]
@@ -80,6 +81,7 @@ export default function PaymentsTableClient({ payments: initialPayments }: Payme
                             <TableCell className="text-right">
                                 {payment.status === 'pending' && (
                                     <Button size="sm" onClick={() => handlePayout(payment.id)}>
+                                        <CreditCard className="mr-2 h-4 w-4" />
                                         Process Payout
                                     </Button>
                                 )}

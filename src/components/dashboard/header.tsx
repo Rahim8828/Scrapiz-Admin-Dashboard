@@ -14,6 +14,7 @@ import {
   Truck,
   Settings,
   User,
+  CreditCard,
 } from "lucide-react";
 import Image from 'next/image';
 

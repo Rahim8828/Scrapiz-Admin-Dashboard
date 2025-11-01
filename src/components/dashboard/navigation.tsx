@@ -12,7 +12,7 @@ import {
   Home,
   ShoppingCart,
   Users,
-  DollarSign,
+  CreditCard,
   LineChart,
   Settings,
   Recycle,
@@ -29,7 +29,8 @@ const navItems = [
   { href: '/dashboard/agents', icon: Truck, label: 'Agents' },
   { href: '/dashboard/areas', icon: Map, label: 'Areas' },
   { href: '/dashboard/pricing', icon: DollarSign, label: 'Pricing' },
-  { href: '/dashboard/payments', icon: LineChart, label: 'Payments' },
+  { href: '/dashboard/payments', icon: CreditCard, label: 'Payments' },
+  { href: '/dashboard/reports', icon: LineChart, label: 'Reports' },
   { href: '/dashboard/notifications', icon: Bell, label: 'Notifications' },
 ];
 
