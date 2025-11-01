@@ -5,6 +5,8 @@ export type PaymentStatus = 'pending' | 'completed' | 'failed';
 export type PaymentType = 'sellerPayout' | 'agentPayout' | 'scrapPurchase';
 export type NotificationType = 'push' | 'sms' | 'email';
 export type NotificationStatus = 'sent' | 'failed' | 'scheduled' | 'draft';
+export type AgentStatus = 'Available' | 'On Duty' | 'Offline';
+
 
 export interface User {
   id: string;
@@ -18,6 +20,7 @@ export interface User {
   documents?: {
     aadhaarURL?: string;
     panURL?: string;
+    licenseURL?: string;
   };
   totalOrders: number;
   totalWeight: number;
@@ -25,6 +28,7 @@ export interface User {
   createdAt: string;
   avatarUrl: string;
   rating?: number;
+  vehicleNumber?: string;
 }
 
 export interface Order {

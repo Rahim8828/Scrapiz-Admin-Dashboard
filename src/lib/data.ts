@@ -34,6 +34,12 @@ export const users: User[] = [
     createdAt: '2024-07-19T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=rohan.gupta@example.com',
     rating: 4.8,
+    vehicleNumber: 'DL 01 AB 1234',
+    documents: {
+        licenseURL: '#',
+        aadhaarURL: '#',
+        panURL: '#'
+    }
   },
   {
     id: 'user-3',
@@ -65,6 +71,12 @@ export const users: User[] = [
     createdAt: '2024-07-04T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=amit.patel@example.com',
     rating: 4.9,
+    vehicleNumber: 'GJ 01 CD 5678',
+    documents: {
+        licenseURL: '#',
+        aadhaarURL: '#',
+        panURL: '#'
+    }
   },
   {
     id: 'user-5',
