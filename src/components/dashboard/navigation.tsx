@@ -59,7 +59,7 @@ export default function Navigation() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    (pathname.startsWith(item.href) && item.href !== '/dashboard') || (pathname === item.href)
+                    (pathname.startsWith(item.href) && item.href !== '/dashboard' && !['/dashboard/'].includes(item.href)) || (pathname === item.href)
                       ? 'bg-accent text-accent-foreground'
                       : ''
                   )}
