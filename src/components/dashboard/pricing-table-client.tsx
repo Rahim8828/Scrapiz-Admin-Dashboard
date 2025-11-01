@@ -60,7 +60,7 @@ export default function PricingTableClient({ initialCategories }: PricingTableCl
                         ...cat, 
                         pricePerKg: parseFloat(newPrice), 
                         updatedAt: new Date().toISOString(),
-                        priceHistory: [...cat.priceHistory, { date: new Date().toISOString(), rate: cat.pricePerKg }]
+                        priceHistory: [...cat.priceHistory, { date: cat.updatedAt, rate: cat.pricePerKg }]
                       }
                     : cat
             );
@@ -90,7 +90,7 @@ export default function PricingTableClient({ initialCategories }: PricingTableCl
                     ...cat,
                     pricePerKg: parseFloat(newBulkPrice),
                     updatedAt: new Date().toISOString(),
-                    priceHistory: [...cat.priceHistory, { date: new Date().toISOString(), rate: cat.pricePerKg }]
+                    priceHistory: [...cat.priceHistory, { date: cat.updatedAt, rate: cat.pricePerKg }]
                 }
             }
             return cat;
@@ -215,7 +215,9 @@ export default function PricingTableClient({ initialCategories }: PricingTableCl
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {[...(selectedCategory?.priceHistory || []), {date: selectedCategory?.updatedAt || '', rate: selectedCategory?.pricePerKg || 0}].sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((entry, index) => (
+                                {[...(selectedCategory?.priceHistory || []), {date: selectedCategory?.updatedAt || '', rate: selectedCategory?.pricePerKg || 0}]
+                                .filter(entry => !isNaN(new Date(entry.date).getTime()))
+                                .sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((entry, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{format(new Date(entry.date), "PPp")}</TableCell>
                                         <TableCell className="text-right">₹{entry.rate.toFixed(2)}</TableCell>
