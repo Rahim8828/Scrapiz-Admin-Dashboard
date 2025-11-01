@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -20,6 +21,7 @@ import {
   Map,
   Bell,
   DollarSign,
+  FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,6 +35,7 @@ const navItems = [
   { href: '/dashboard/payments', icon: CreditCard, label: 'Payments' },
   { href: '/dashboard/reports', icon: LineChart, label: 'Reports' },
   { href: '/dashboard/notifications', icon: Bell, label: 'Notifications' },
+  { href: '/dashboard/content', icon: FileText, label: 'Content' },
 ];
 
 export default function Navigation() {
@@ -56,7 +59,7 @@ export default function Navigation() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    pathname.startsWith(item.href) && (item.href !== '/dashboard' || pathname === '/dashboard')
+                    (pathname.startsWith(item.href) && item.href !== '/dashboard') || (pathname === item.href)
                       ? 'bg-accent text-accent-foreground'
                       : ''
                   )}
