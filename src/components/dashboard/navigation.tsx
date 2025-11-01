@@ -19,6 +19,7 @@ import {
   Truck,
   Map,
   Bell,
+  DollarSign,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
