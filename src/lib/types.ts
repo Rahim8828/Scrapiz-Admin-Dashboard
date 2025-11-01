@@ -46,7 +46,9 @@ export interface ScrapCategory {
   id: string;
   name: string;
   pricePerKg: number;
+  unit: 'kg' | 'piece';
   updatedAt: string;
+  priceHistory: { date: string; rate: number }[];
 }
 
 export interface Payment {
