@@ -1,7 +1,8 @@
 import type { User, Order, ScrapCategory, Payment } from '@/lib/types';
 import { subDays, subHours } from 'date-fns';
 
-const now = new Date();
+// Use a fixed date to prevent hydration errors.
+const now = new Date('2024-07-29T12:00:00.000Z');
 
 export const users: User[] = [
   {
@@ -99,11 +100,11 @@ export const users: User[] = [
 ];
 
 export const scrapCategories: ScrapCategory[] = [
-  { id: 'cat-1', name: 'Steel', pricePerKg: 25, unit: 'kg', updatedAt: now.toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 23}, {date: subDays(now, 5).toISOString(), rate: 24}] },
-  { id: 'cat-2', name: 'Aluminum', pricePerKg: 120, unit: 'kg', updatedAt: now.toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 115}, {date: subDays(now, 3).toISOString(), rate: 118}] },
+  { id: 'cat-1', name: 'Steel', pricePerKg: 25, unit: 'kg', updatedAt: subDays(now, 1).toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 23}, {date: subDays(now, 5).toISOString(), rate: 24}] },
+  { id: 'cat-2', name: 'Aluminum', pricePerKg: 120, unit: 'kg', updatedAt: subDays(now, 0).toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 115}, {date: subDays(now, 3).toISOString(), rate: 118}] },
   { id: 'cat-3', name: 'Copper', pricePerKg: 450, unit: 'kg', updatedAt: subDays(now, 1).toISOString(), priceHistory: [{date: subDays(now, 15).toISOString(), rate: 440}, {date: subDays(now, 7).toISOString(), rate: 445}] },
   { id: 'cat-4', name: 'Plastic', pricePerKg: 15, unit: 'kg', updatedAt: subDays(now, 2).toISOString(), priceHistory: [{date: subDays(now, 8).toISOString(), rate: 14}] },
-  { id: 'cat-5', name: 'Paper', pricePerKg: 10, unit: 'kg', updatedAt: now.toISOString(), priceHistory: [{date: subDays(now, 20).toISOString(), rate: 9}] },
+  { id: 'cat-5', name: 'Paper', pricePerKg: 10, unit: 'kg', updatedAt: subDays(now, 0).toISOString(), priceHistory: [{date: subDays(now, 20).toISOString(), rate: 9}] },
 ];
 
 export const orders: Order[] = [

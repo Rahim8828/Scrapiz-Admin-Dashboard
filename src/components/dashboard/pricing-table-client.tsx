@@ -216,7 +216,7 @@ export default function PricingTableClient({ initialCategories }: PricingTableCl
                             </TableHeader>
                             <TableBody>
                                 {[...(selectedCategory?.priceHistory || []), {date: selectedCategory?.updatedAt || '', rate: selectedCategory?.pricePerKg || 0}]
-                                .filter(entry => !isNaN(new Date(entry.date).getTime()))
+                                .filter(entry => entry.date && !isNaN(new Date(entry.date).getTime()))
                                 .sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((entry, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{format(new Date(entry.date), "PPp")}</TableCell>
