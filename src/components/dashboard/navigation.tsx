@@ -18,6 +18,7 @@ import {
   Recycle,
   Truck,
   Map,
+  Bell,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +30,7 @@ const navItems = [
   { href: '/dashboard/areas', icon: Map, label: 'Areas' },
   { href: '/dashboard/pricing', icon: DollarSign, label: 'Pricing' },
   { href: '/dashboard/payments', icon: LineChart, label: 'Payments' },
+  { href: '/dashboard/notifications', icon: Bell, label: 'Notifications' },
 ];
 
 export default function Navigation() {

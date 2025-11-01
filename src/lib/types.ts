@@ -3,6 +3,8 @@ export type KycStatus = 'pending' | 'verified' | 'rejected';
 export type OrderStatus = 'pending' | 'assigned' | 'accepted' | 'on_the_way' | 'completed' | 'cancelled';
 export type PaymentStatus = 'pending' | 'completed' | 'failed';
 export type PaymentType = 'sellerPayout' | 'agentPayout' | 'scrapPurchase';
+export type NotificationType = 'push' | 'sms' | 'email';
+export type NotificationStatus = 'sent' | 'failed' | 'scheduled' | 'draft';
 
 export interface User {
   id: string;
@@ -65,11 +67,13 @@ export interface Payment {
 
 export interface Notification {
   id: string;
-  userId: string;
+  type: NotificationType;
+  title?: string;
   message: string;
-  type: 'order' | 'payment' | 'kyc';
-  status: 'read' | 'unread';
+  status: NotificationStatus;
   createdAt: string;
+  recipientCount: number;
+  target: 'All Users' | 'Sellers' | 'Agents' | 'Buyers';
 }
 
 export interface ServiceArea {

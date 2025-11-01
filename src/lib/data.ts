@@ -1,4 +1,4 @@
-import type { User, Order, ScrapCategory, Payment, ServiceArea } from '@/lib/types';
+import type { User, Order, ScrapCategory, Payment, ServiceArea, Notification } from '@/lib/types';
 
 // Use a fixed date to prevent hydration errors.
 const now = new Date('2024-07-29T12:00:00.000Z');
@@ -130,7 +130,7 @@ export const orders: Order[] = [
     scrapCategory: 'Plastic',
     estimatedWeight: 15,
     pickupAddress: '789, Orchid Heights, Bangalore',
-    pickupTime: now.toISOString(),
+    pickupTime: '2024-07-30T14:00:00.000Z',
     status: 'assigned',
     pricePerKg: 15,
     createdAt: '2024-07-28T12:00:00.000Z',
@@ -143,7 +143,7 @@ export const orders: Order[] = [
     estimatedWeight: 5,
     pricePerKg: 120,
     pickupAddress: '123, Rose Villa, Mumbai',
-    pickupTime: '2024-07-27T12:00:00.000Z',
+    pickupTime: '2024-07-31T11:00:00.000Z',
     status: 'pending',
     createdAt: '2024-07-28T12:00:00.000Z',
   },
@@ -204,6 +204,47 @@ export const serviceAreas: ServiceArea[] = [
     { id: 'area-6', name: 'Connaught Place', pincode: '110001', active: true, zone: 'North' },
 ];
 
+export const notifications: Notification[] = [
+    {
+      id: 'notif-1',
+      type: 'push',
+      title: 'Scrap Rates Updated!',
+      message: 'Great news! We have increased the rates for Copper and Aluminum. Check the app now.',
+      status: 'sent',
+      createdAt: '2024-07-29T12:10:00.000Z',
+      recipientCount: 1500,
+      target: 'All Users',
+    },
+    {
+      id: 'notif-2',
+      type: 'sms',
+      message: 'Your pickup (ID: order-102) is scheduled. Our agent will arrive shortly. - Scrapiz',
+      status: 'sent',
+      createdAt: '2024-07-28T12:05:00.000Z',
+      recipientCount: 1,
+      target: 'Sellers',
+    },
+    {
+      id: 'notif-3',
+      type: 'email',
+      title: 'Welcome to Scrapiz for Agents!',
+      message: 'Hi Amit, your agent account is now active. Complete your profile to start receiving pickup requests.',
+      status: 'sent',
+      createdAt: '2024-07-04T12:30:00.000Z',
+      recipientCount: 1,
+      target: 'Agents',
+    },
+     {
+      id: 'notif-4',
+      type: 'push',
+      title: 'Monsoon Pickup Delays',
+      message: 'Due to heavy rains in the West zone, pickups may be delayed. We appreciate your patience.',
+      status: 'sent',
+      createdAt: '2024-07-26T09:00:00.000Z',
+      recipientCount: 350,
+      target: 'Sellers',
+    },
+];
 
 export function getSellerById(id: string) {
     return users.find(u => u.id === id && u.role === 'seller');
