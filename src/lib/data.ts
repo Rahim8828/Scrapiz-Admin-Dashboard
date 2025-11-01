@@ -1,5 +1,4 @@
 import type { User, Order, ScrapCategory, Payment } from '@/lib/types';
-import { subDays, subHours } from 'date-fns';
 
 // Use a fixed date to prevent hydration errors.
 const now = new Date('2024-07-29T12:00:00.000Z');
@@ -17,7 +16,7 @@ export const users: User[] = [
     totalOrders: 12,
     totalWeight: 250.5,
     walletBalance: 1500.75,
-    createdAt: subDays(now, 5).toISOString(),
+    createdAt: '2024-07-24T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=anika.sharma@example.com',
   },
   {
@@ -32,7 +31,7 @@ export const users: User[] = [
     totalOrders: 58,
     totalWeight: 1200,
     walletBalance: 3200.0,
-    createdAt: subDays(now, 10).toISOString(),
+    createdAt: '2024-07-19T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=rohan.gupta@example.com',
     rating: 4.8,
   },
@@ -48,7 +47,7 @@ export const users: User[] = [
     totalOrders: 3,
     totalWeight: 45.2,
     walletBalance: 350.5,
-    createdAt: subDays(now, 2).toISOString(),
+    createdAt: '2024-07-27T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=priya.singh@example.com',
   },
   {
@@ -63,7 +62,7 @@ export const users: User[] = [
     totalOrders: 75,
     totalWeight: 1800,
     walletBalance: 4500.0,
-    createdAt: subDays(now, 25).toISOString(),
+    createdAt: '2024-07-04T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=amit.patel@example.com',
     rating: 4.9,
   },
@@ -79,7 +78,7 @@ export const users: User[] = [
     totalOrders: 200,
     totalWeight: 5000,
     walletBalance: 0,
-    createdAt: subDays(now, 40).toISOString(),
+    createdAt: '2024-06-19T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=sonia.reddy@example.com',
   },
   {
@@ -94,17 +93,17 @@ export const users: User[] = [
     totalOrders: 0,
     totalWeight: 0,
     walletBalance: 0,
-    createdAt: subDays(now, 100).toISOString(),
+    createdAt: '2024-04-20T12:00:00.000Z',
     avatarUrl: 'https://i.pravatar.cc/150?u=vikram.bose@example.com',
   },
 ];
 
 export const scrapCategories: ScrapCategory[] = [
-  { id: 'cat-1', name: 'Steel', pricePerKg: 25, unit: 'kg', updatedAt: subDays(now, 1).toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 23}, {date: subDays(now, 5).toISOString(), rate: 24}] },
-  { id: 'cat-2', name: 'Aluminum', pricePerKg: 120, unit: 'kg', updatedAt: subDays(now, 0).toISOString(), priceHistory: [{date: subDays(now, 10).toISOString(), rate: 115}, {date: subDays(now, 3).toISOString(), rate: 118}] },
-  { id: 'cat-3', name: 'Copper', pricePerKg: 450, unit: 'kg', updatedAt: subDays(now, 1).toISOString(), priceHistory: [{date: subDays(now, 15).toISOString(), rate: 440}, {date: subDays(now, 7).toISOString(), rate: 445}] },
-  { id: 'cat-4', name: 'Plastic', pricePerKg: 15, unit: 'kg', updatedAt: subDays(now, 2).toISOString(), priceHistory: [{date: subDays(now, 8).toISOString(), rate: 14}] },
-  { id: 'cat-5', name: 'Paper', pricePerKg: 10, unit: 'kg', updatedAt: subDays(now, 0).toISOString(), priceHistory: [{date: subDays(now, 20).toISOString(), rate: 9}] },
+  { id: 'cat-1', name: 'Steel', pricePerKg: 25, unit: 'kg', updatedAt: '2024-07-28T12:00:00.000Z', priceHistory: [{date: '2024-07-19T12:00:00.000Z', rate: 23}, {date: '2024-07-24T12:00:00.000Z', rate: 24}] },
+  { id: 'cat-2', name: 'Aluminum', pricePerKg: 120, unit: 'kg', updatedAt: '2024-07-29T12:00:00.000Z', priceHistory: [{date: '2024-07-19T12:00:00.000Z', rate: 115}, {date: '2024-07-26T12:00:00.000Z', rate: 118}] },
+  { id: 'cat-3', name: 'Copper', pricePerKg: 450, unit: 'kg', updatedAt: '2024-07-28T12:00:00.000Z', priceHistory: [{date: '2024-07-14T12:00:00.000Z', rate: 440}, {date: '2024-07-22T12:00:00.000Z', rate: 445}] },
+  { id: 'cat-4', name: 'Plastic', pricePerKg: 15, unit: 'kg', updatedAt: '2024-07-27T12:00:00.000Z', priceHistory: [{date: '2024-07-21T12:00:00.000Z', rate: 14}] },
+  { id: 'cat-5', name: 'Paper', pricePerKg: 10, unit: 'kg', updatedAt: '2024-07-29T12:00:00.000Z', priceHistory: [{date: '2024-07-09T12:00:00.000Z', rate: 9}] },
 ];
 
 export const orders: Order[] = [
@@ -118,9 +117,9 @@ export const orders: Order[] = [
     pricePerKg: 25,
     totalAmount: 562.5,
     pickupAddress: '123, Rose Villa, Mumbai',
-    pickupTime: subHours(now, 2).toISOString(),
+    pickupTime: '2024-07-29T10:00:00.000Z',
     status: 'completed',
-    createdAt: subHours(now, 4).toISOString(),
+    createdAt: '2024-07-29T08:00:00.000Z',
   },
   {
     id: 'order-102',
@@ -132,7 +131,7 @@ export const orders: Order[] = [
     pickupTime: new Date().toISOString(),
     status: 'assigned',
     pricePerKg: 15,
-    createdAt: subDays(now, 1).toISOString(),
+    createdAt: '2024-07-28T12:00:00.000Z',
   },
   {
     id: 'order-103',
@@ -141,9 +140,9 @@ export const orders: Order[] = [
     estimatedWeight: 5,
     pricePerKg: 120,
     pickupAddress: '123, Rose Villa, Mumbai',
-    pickupTime: subDays(now, 2).toISOString(),
+    pickupTime: '2024-07-27T12:00:00.000Z',
     status: 'pending',
-    createdAt: subDays(now, 1).toISOString(),
+    createdAt: '2024-07-28T12:00:00.000Z',
   },
   {
     id: 'order-104',
@@ -155,9 +154,9 @@ export const orders: Order[] = [
     pricePerKg: 450,
     totalAmount: 810,
     pickupAddress: '123, Rose Villa, Mumbai',
-    pickupTime: subDays(now, 3).toISOString(),
+    pickupTime: '2024-07-26T12:00:00.000Z',
     status: 'completed',
-    createdAt: subDays(now, 3).toISOString(),
+    createdAt: '2024-07-26T12:00:00.000Z',
   },
   {
     id: 'order-105',
@@ -166,10 +165,10 @@ export const orders: Order[] = [
     scrapCategory: 'Paper',
     estimatedWeight: 30,
     pickupAddress: '789, Orchid Heights, Bangalore',
-    pickupTime: subHours(now, 5).toISOString(),
+    pickupTime: '2024-07-29T07:00:00.000Z',
     status: 'on_the_way',
     pricePerKg: 10,
-    createdAt: subHours(now, 6).toISOString(),
+    createdAt: '2024-07-29T06:00:00.000Z',
   },
   {
     id: 'order-106',
@@ -178,17 +177,17 @@ export const orders: Order[] = [
     estimatedWeight: 500,
     pricePerKg: 25,
     pickupAddress: '202, Silicon Towers, Hyderabad',
-    pickupTime: subDays(now, 4).toISOString(),
+    pickupTime: '2024-07-25T12:00:00.000Z',
     status: 'cancelled',
-    createdAt: subDays(now, 4).toISOString(),
+    createdAt: '2024-07-25T12:00:00.000Z',
   },
 ];
 
 export const payments: Payment[] = [
-    { id: 'pay-1', userId: 'user-1', orderId: 'order-101', amount: 562.5, type: 'sellerPayout', paymentMode: 'UPI', status: 'completed', createdAt: subHours(now, 1).toISOString() },
-    { id: 'pay-2', userId: 'user-2', orderId: 'order-101', amount: 50, type: 'agentPayout', paymentMode: 'bank', status: 'completed', createdAt: subHours(now, 1).toISOString() },
-    { id: 'pay-3', userId: 'user-1', orderId: 'order-104', amount: 810, type: 'sellerPayout', paymentMode: 'UPI', status: 'completed', createdAt: subDays(now, 2).toISOString() },
-    { id: 'pay-4', userId: 'user-4', orderId: 'order-102', amount: 30, type: 'agentPayout', paymentMode: 'bank', status: 'pending', createdAt: subDays(now, 1).toISOString() }
+    { id: 'pay-1', userId: 'user-1', orderId: 'order-101', amount: 562.5, type: 'sellerPayout', paymentMode: 'UPI', status: 'completed', createdAt: '2024-07-29T11:00:00.000Z' },
+    { id: 'pay-2', userId: 'user-2', orderId: 'order-101', amount: 50, type: 'agentPayout', paymentMode: 'bank', status: 'completed', createdAt: '2024-07-29T11:00:00.000Z' },
+    { id: 'pay-3', userId: 'user-1', orderId: 'order-104', amount: 810, type: 'sellerPayout', paymentMode: 'UPI', status: 'completed', createdAt: '2024-07-27T12:00:00.000Z' },
+    { id: 'pay-4', userId: 'user-4', orderId: 'order-102', amount: 30, type: 'agentPayout', paymentMode: 'bank', status: 'pending', createdAt: '2024-07-28T12:00:00.000Z' }
 ];
 
 export function getSellerById(id: string) {
