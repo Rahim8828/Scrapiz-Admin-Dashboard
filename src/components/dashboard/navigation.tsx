@@ -17,6 +17,7 @@ import {
   Settings,
   Recycle,
   Truck,
+  Map,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +26,7 @@ const navItems = [
   { href: '/dashboard/orders', icon: ShoppingCart, label: 'Orders' },
   { href: '/dashboard/users', icon: Users, label: 'Users' },
   { href: '/dashboard/agents', icon: Truck, label: 'Agents' },
+  { href: '/dashboard/areas', icon: Map, label: 'Areas' },
   { href: '/dashboard/pricing', icon: DollarSign, label: 'Pricing' },
   { href: '/dashboard/payments', icon: LineChart, label: 'Payments' },
 ];

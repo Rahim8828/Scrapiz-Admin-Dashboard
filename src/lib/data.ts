@@ -1,4 +1,4 @@
-import type { User, Order, ScrapCategory, Payment } from '@/lib/types';
+import type { User, Order, ScrapCategory, Payment, ServiceArea } from '@/lib/types';
 
 // Use a fixed date to prevent hydration errors.
 const now = new Date('2024-07-29T12:00:00.000Z');
@@ -128,7 +128,7 @@ export const orders: Order[] = [
     scrapCategory: 'Plastic',
     estimatedWeight: 15,
     pickupAddress: '789, Orchid Heights, Bangalore',
-    pickupTime: new Date().toISOString(),
+    pickupTime: now.toISOString(),
     status: 'assigned',
     pricePerKg: 15,
     createdAt: '2024-07-28T12:00:00.000Z',
@@ -189,6 +189,16 @@ export const payments: Payment[] = [
     { id: 'pay-3', userId: 'user-1', orderId: 'order-104', amount: 810, type: 'sellerPayout', paymentMode: 'UPI', status: 'completed', createdAt: '2024-07-27T12:00:00.000Z' },
     { id: 'pay-4', userId: 'user-4', orderId: 'order-102', amount: 30, type: 'agentPayout', paymentMode: 'bank', status: 'pending', createdAt: '2024-07-28T12:00:00.000Z' }
 ];
+
+export const serviceAreas: ServiceArea[] = [
+    { id: 'area-1', name: 'Andheri West', pincode: '400058', active: true, zone: 'West' },
+    { id: 'area-2', name: 'Bandra', pincode: '400050', active: true, zone: 'West' },
+    { id: 'area-3', name: 'Dadar', pincode: '400014', active: false, zone: 'West' },
+    { id: 'area-4', name: 'Koramangala', pincode: '560034', active: true, zone: 'South' },
+    { id: 'area-5', name: 'Indiranagar', pincode: '560038', active: true, zone: 'South' },
+    { id: 'area-6', name: 'Connaught Place', pincode: '110001', active: true, zone: 'North' },
+];
+
 
 export function getSellerById(id: string) {
     return users.find(u => u.id === id && u.role === 'seller');

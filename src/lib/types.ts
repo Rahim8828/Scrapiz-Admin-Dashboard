@@ -70,3 +70,11 @@ export interface Notification {
   status: 'read' | 'unread';
   createdAt: string;
 }
+
+export interface ServiceArea {
+  id: string;
+  name: string;
+  pincode: string;
+  active: boolean;
+  zone: string;
+}
