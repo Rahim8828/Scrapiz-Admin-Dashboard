@@ -3,16 +3,8 @@
 import {
   File,
   ListFilter,
+  Search,
 } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -27,15 +19,31 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
-import { orders as initialOrders, users } from "@/lib/data"
+import { orders as initialOrders, users, scrapCategories } from "@/lib/data"
 import OrdersTableClient from "@/components/dashboard/orders-table-client"
-import { useState } from "react";
-import type { Order } from "@/lib/types";
+import { useEffect, useState } from "react";
+import type { Order, OrderStatus } from "@/lib/types";
 import NewOrderDialog from "@/components/dashboard/new-order-dialog";
+import { Button } from "@/components/ui/button";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>(initialOrders);
+  const [activeTab, setActiveTab] = useState<OrderStatus | "all">("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    category: [] as string[],
+    agent: [] as string[],
+  });
 
   const handleAddOrder = (newOrder: Omit<Order, 'id' | 'createdAt' | 'status'>) => {
     const newOrderWithId: Order = {
@@ -44,25 +52,82 @@ export default function OrdersPage() {
       createdAt: new Date().toISOString(),
       status: 'pending',
     };
-    setOrders(prevOrders => [newOrderWithId, ...prevOrders]);
+    const updatedOrders = [newOrderWithId, ...orders];
+    setOrders(updatedOrders);
+  };
+  
+  const handleFilterChange = (type: 'category' | 'agent', value: string) => {
+    setFilters(prev => {
+        const currentValues = prev[type] as string[];
+        const newValues = currentValues.includes(value)
+            ? currentValues.filter(v => v !== value)
+            : [...currentValues, value];
+        return { ...prev, [type]: newValues };
+    });
   };
 
+  useEffect(() => {
+    let newFilteredOrders = orders;
+
+    // Filter by Tab
+    if (activeTab !== 'all') {
+      newFilteredOrders = newFilteredOrders.filter(o => o.status === activeTab);
+    }
+    
+    // Filter by Search Term
+    if (searchTerm) {
+        const lowercasedTerm = searchTerm.toLowerCase();
+        newFilteredOrders = newFilteredOrders.filter(order =>
+            order.id.toLowerCase().includes(lowercasedTerm) ||
+            (users.find(u => u.id === order.sellerId)?.name.toLowerCase().includes(lowercasedTerm)) ||
+            (users.find(u => u.id === order.agentId)?.name.toLowerCase().includes(lowercasedTerm))
+        );
+    }
+
+    // Filter by Category
+    if (filters.category.length > 0) {
+        newFilteredOrders = newFilteredOrders.filter(order => filters.category.includes(order.scrapCategory));
+    }
+
+    // Filter by Agent
+    if (filters.agent.length > 0) {
+        newFilteredOrders = newFilteredOrders.filter(order => order.agentId && filters.agent.includes(order.agentId));
+    }
+
+
+    setFilteredOrders(newFilteredOrders);
+  }, [activeTab, orders, searchTerm, filters]);
+
+
+  const agents = users.filter(u => u.role === 'agent');
+
   return (
-    <Tabs defaultValue="all">
-      <div className="flex items-center">
-        <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="pending">Pending</TabsTrigger>
-          <TabsTrigger value="assigned">Assigned</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
+    <Tabs defaultValue="all" onValueChange={(value) => setActiveTab(value as OrderStatus | 'all')}>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <TabsList className="w-full sm:w-auto">
+          <TabsTrigger value="all" className="flex-1 sm:flex-none">All</TabsTrigger>
+          <TabsTrigger value="pending" className="flex-1 sm:flex-none">Pending</TabsTrigger>
+          <TabsTrigger value="assigned" className="flex-1 sm:flex-none">Assigned</TabsTrigger>
+          <TabsTrigger value="completed" className="flex-1 sm:flex-none">Completed</TabsTrigger>
           <TabsTrigger value="cancelled" className="hidden sm:flex">
             Cancelled
           </TabsTrigger>
         </TabsList>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:ml-auto">
+         <div className="relative flex-1 sm:flex-initial">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-lg bg-secondary pl-8 sm:w-[200px] lg:w-[320px]"
+            />
+          </div>
+        <div className="flex items-center gap-2 shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
+              <Button variant="outline" size="sm" className="h-9 gap-1">
                 <ListFilter className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Filter
@@ -72,14 +137,30 @@ export default function OrdersPage() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filter by</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked>
-                Date
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Category</DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Agent</DropdownMenuCheckboxItem>
+              <DropdownMenuLabel className="text-xs font-normal">Category</DropdownMenuLabel>
+               {scrapCategories.map(cat => (
+                 <DropdownMenuCheckboxItem
+                    key={cat.id}
+                    checked={filters.category.includes(cat.name)}
+                    onCheckedChange={() => handleFilterChange('category', cat.name)}
+                 >
+                    {cat.name}
+                 </DropdownMenuCheckboxItem>
+               ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel className="text-xs font-normal">Agent</DropdownMenuLabel>
+               {agents.map(agent => (
+                 <DropdownMenuCheckboxItem
+                    key={agent.id}
+                    checked={filters.agent.includes(agent.id)}
+                    onCheckedChange={() => handleFilterChange('agent', agent.id)}
+                 >
+                    {agent.name}
+                 </DropdownMenuCheckboxItem>
+               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm" variant="outline" className="h-8 gap-1">
+          <Button size="sm" variant="outline" className="h-9 gap-1 hidden sm:flex">
             <File className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               Export
@@ -89,6 +170,7 @@ export default function OrdersPage() {
             sellers={users.filter(u => u.role === 'seller')} 
             onOrderCreate={handleAddOrder}
           />
+        </div>
         </div>
       </div>
       <TabsContent value="all">
@@ -100,7 +182,7 @@ export default function OrdersPage() {
                 </CardDescription>
             </CardHeader>
           <CardContent>
-            <OrdersTableClient orders={orders} />
+            <OrdersTableClient orders={filteredOrders} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -113,7 +195,7 @@ export default function OrdersPage() {
                 </CardDescription>
             </CardHeader>
           <CardContent>
-            <OrdersTableClient orders={orders.filter(o => o.status === 'pending')} />
+            <OrdersTableClient orders={filteredOrders} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -126,7 +208,7 @@ export default function OrdersPage() {
                 </CardDescription>
             </CardHeader>
           <CardContent>
-            <OrdersTableClient orders={orders.filter(o => o.status === 'assigned')} />
+            <OrdersTableClient orders={filteredOrders} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -139,7 +221,7 @@ export default function OrdersPage() {
                 </CardDescription>
             </CardHeader>
           <CardContent>
-            <OrdersTableClient orders={orders.filter(o => o.status === 'completed')} />
+            <OrdersTableClient orders={filteredOrders} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -152,7 +234,7 @@ export default function OrdersPage() {
                 </CardDescription>
             </CardHeader>
           <CardContent>
-            <OrdersTableClient orders={orders.filter(o => o.status === 'cancelled')} />
+            <OrdersTableClient orders={filteredOrders} />
           </CardContent>
         </Card>
       </TabsContent>

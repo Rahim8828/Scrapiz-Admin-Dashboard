@@ -8,6 +8,17 @@ export type NotificationStatus = 'sent' | 'failed' | 'scheduled' | 'draft';
 export type AgentStatus = 'Available' | 'On Duty' | 'Offline';
 
 
+export interface SavedAddress {
+  id: string;
+  title: 'Home' | 'Work' | 'Other';
+  addressLine: string;
+  landmark?: string;
+  city: string;
+  pincode: string;
+  contactName: string;
+  mobile: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -29,6 +40,9 @@ export interface User {
   avatarUrl: string;
   rating?: number;
   vehicleNumber?: string;
+  referralCode?: string;  // User's referral code
+  totalReferrals?: number;  // Number of successful referrals
+  savedAddresses?: SavedAddress[];  // Saved addresses from mobile app
 }
 
 export interface Order {
@@ -47,6 +61,8 @@ export interface Order {
   invoiceUrl?: string;
   createdAt: string;
   notes?: string;
+  photos?: string[];  // Multiple photos from mobile app
+  type?: 'scrap' | 'service';  // Order type
 }
 
 export interface ScrapCategory {
@@ -86,4 +102,46 @@ export interface ServiceArea {
   pincode: string;
   active: boolean;
   zone: string;
+}
+
+export interface ServiceOrder {
+  id: string;
+  service: string;
+  customerId: string;
+  customerName: string;
+  phone: string;
+  email: string;
+  date: string;
+  time: string;
+  address: string;
+  pincode: string;
+  propertyType: 'Residential' | 'Commercial' | 'Industrial';
+  status: 'Pending' | 'Confirmed' | 'In Progress' | 'Completed' | 'Cancelled';
+  details: {
+    area?: string;
+    floors?: string;
+    specialRequirements?: string;
+    [key: string]: any;
+  };
+  estimatedPrice?: number;
+  finalPrice?: number;
+  agentId?: string;
+  createdAt: string;
+  notes?: string;
+}
+
+export interface Referral {
+  id: string;
+  referrerId: string;
+  referrerName: string;
+  referrerCode: string;
+  refereeId: string;
+  refereeName: string;
+  refereeEmail: string;
+  date: string;
+  status: 'Pending' | 'Completed' | 'Expired';
+  bonusPaid: number;
+  referrerBonus: number;
+  refereeBonus: number;
+  createdAt: string;
 }

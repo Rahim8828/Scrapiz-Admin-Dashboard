@@ -34,7 +34,7 @@ export default function AgentDetailsDialog({ agent, isOpen, onOpenChange }: Agen
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">

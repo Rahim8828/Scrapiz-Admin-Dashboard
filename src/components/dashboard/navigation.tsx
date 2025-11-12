@@ -22,20 +22,25 @@ import {
   Bell,
   DollarSign,
   FileText,
+  Wrench,
+  Gift,
+  Package,
+  Layers,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
   { href: '/dashboard/orders', icon: ShoppingCart, label: 'Orders' },
+  { href: '/dashboard/service-orders', icon: Wrench, label: 'Services' },
   { href: '/dashboard/users', icon: Users, label: 'Users' },
   { href: '/dashboard/agents', icon: Truck, label: 'Agents' },
+  { href: '/dashboard/referrals', icon: Gift, label: 'Referrals' },
+  { href: '/dashboard/categories', icon: Layers, label: 'Categories' },
+  { href: '/dashboard/items', icon: Package, label: 'Items' },
   { href: '/dashboard/areas', icon: Map, label: 'Areas' },
-  { href: '/dashboard/pricing', icon: DollarSign, label: 'Pricing' },
   { href: '/dashboard/payments', icon: CreditCard, label: 'Payments' },
   { href: '/dashboard/reports', icon: LineChart, label: 'Reports' },
-  { href: '/dashboard/notifications', icon: Bell, label: 'Notifications' },
-  { href: '/dashboard/content', icon: FileText, label: 'Content' },
 ];
 
 export default function Navigation() {
@@ -59,7 +64,7 @@ export default function Navigation() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    (pathname.startsWith(item.href) && item.href !== '/dashboard' && !['/dashboard/'].includes(item.href)) || (pathname === item.href)
+                    (item.href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(item.href))
                       ? 'bg-accent text-accent-foreground'
                       : ''
                   )}

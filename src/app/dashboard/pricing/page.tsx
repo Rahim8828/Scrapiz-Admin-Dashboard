@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -12,9 +13,9 @@ export default function PricingPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Scrap Pricing Management</CardTitle>
+        <CardTitle>Scrap Pricing</CardTitle>
         <CardDescription>
-          View, update, and analyze scrap pricing per category.
+          Set and update scrap pricing per category to reflect market rates.
         </CardDescription>
       </CardHeader>
       <CardContent>

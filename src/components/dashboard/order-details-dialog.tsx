@@ -12,7 +12,7 @@ import type { Order, User } from "@/lib/types"
 import { users } from "@/lib/data"
 import { format } from "date-fns"
 import Image from "next/image"
-import { MapPin, User as UserIcon, Phone, Truck, Calendar, Hash, Box, Weight, DollarSign, StickyNote, Image as ImageIcon } from "lucide-react"
+import { MapPin, User as UserIcon, Phone, Truck, Calendar, Hash, Box, Weight, DollarSign, StickyNote, Image as ImageIcon, Camera } from "lucide-react"
 
 interface OrderDetailsDialogProps {
   order: Order
@@ -34,7 +34,7 @@ export default function OrderDetailsDialog({ order, isOpen, onOpenChange }: Orde
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Order Details: #{order.id}</DialogTitle>
           <DialogDescription>
@@ -109,11 +109,39 @@ export default function OrderDetailsDialog({ order, isOpen, onOpenChange }: Orde
                 </div>
             </div>
 
+            {/* Customer Photos */}
+            {order.photos && order.photos.length > 0 && (
+                <div>
+                    <h3 className="font-semibold text-lg mb-2 flex items-center">
+                      <Camera className="w-5 h-5 mr-2 text-green-600" />
+                      Customer Photos ({order.photos.length})
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {order.photos.map((photo, index) => (
+                        <div key={index} className="relative aspect-square rounded-md overflow-hidden border border-green-200 hover:border-green-400 transition-colors">
+                          <Image 
+                            src={photo} 
+                            alt={`Order photo ${index + 1}`}
+                            fill
+                            className="object-cover hover:scale-110 transition-transform cursor-pointer"
+                            data-ai-hint="scrap items"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                </div>
+            )}
+            
             {/* Notes */}
             {order.notes && (
                 <div>
-                    <h3 className="font-semibold text-lg mb-2 flex items-center"><StickyNote className="w-5 h-5 mr-2" />Customer Notes</h3>
-                    <p className="text-sm bg-muted p-3 rounded-md">{order.notes}</p>
+                    <h3 className="font-semibold text-lg mb-2 flex items-center">
+                      <StickyNote className="w-5 h-5 mr-2 text-orange-600" />
+                      Customer Notes
+                    </h3>
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800">
+                      <p className="text-sm">{order.notes}</p>
+                    </div>
                 </div>
             )}
             
@@ -121,8 +149,8 @@ export default function OrderDetailsDialog({ order, isOpen, onOpenChange }: Orde
             {order.proofPhotoUrl && (
                 <div>
                     <h3 className="font-semibold text-lg mb-2 flex items-center"><ImageIcon className="w-5 h-5 mr-2" />Proof of Pickup</h3>
-                    <div className="relative w-full aspect-video rounded-md overflow-hidden">
-                        <Image src={order.proofPhotoUrl} alt="Proof of pickup" layout="fill" objectFit="cover" data-ai-hint="scrap metal" />
+                    <div className="relative w-full aspect-video rounded-md overflow-hidden border">
+                        <Image src={order.proofPhotoUrl} alt="Proof of pickup" fill className="object-cover" data-ai-hint="scrap metal" />
                     </div>
                 </div>
             )}
