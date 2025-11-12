@@ -16,16 +16,14 @@ import {
   CreditCard,
   LineChart,
   Settings,
-  Recycle,
   Truck,
   Map,
-  Bell,
-  DollarSign,
-  FileText,
   Wrench,
   Gift,
   Package,
   Layers,
+  BarChart3,
+  Shield,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -38,9 +36,10 @@ const navItems = [
   { href: '/dashboard/referrals', icon: Gift, label: 'Referrals' },
   { href: '/dashboard/categories', icon: Layers, label: 'Categories' },
   { href: '/dashboard/items', icon: Package, label: 'Items' },
+  { href: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
+  { href: '/dashboard/authentication', icon: Shield, label: 'Auth' },
   { href: '/dashboard/areas', icon: Map, label: 'Areas' },
   { href: '/dashboard/payments', icon: CreditCard, label: 'Payments' },
-  { href: '/dashboard/reports', icon: LineChart, label: 'Reports' },
 ];
 
 export default function Navigation() {
@@ -50,10 +49,10 @@ export default function Navigation() {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 py-4">
         <Link
-          href="#"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          href="/dashboard"
+          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-green-600 hover:bg-green-700 text-lg font-bold md:h-8 md:w-8 md:text-base transition-all"
         >
-          <Recycle className="h-4 w-4 transition-all group-hover:scale-110" />
+          <span className="text-xl font-bold text-white transition-all group-hover:scale-110">S</span>
           <span className="sr-only">Scrapiz Admin</span>
         </Link>
         <TooltipProvider>

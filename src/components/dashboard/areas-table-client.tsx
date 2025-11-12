@@ -46,16 +46,59 @@ export default function AreasTableClient({ initialAreas }: AreasTableClientProps
     })
   }
 
+  const handleAddNewArea = () => {
+    toast({
+      title: "Add New Area",
+      description: "Add new area dialog would open here",
+    })
+    // TODO: Implement add area dialog
+  }
+
+  const handleViewCoverageMap = () => {
+    toast({
+      title: "Coverage Map",
+      description: "Coverage map view would open here",
+    })
+    // TODO: Implement coverage map view
+  }
+
+  const handleEdit = (areaId: string) => {
+    toast({
+      title: "Edit Area",
+      description: `Edit dialog for area ${areaId} would open here`,
+    })
+    // TODO: Implement edit area dialog
+  }
+
+  const handleAssignDrivers = (areaId: string) => {
+    toast({
+      title: "Assign Drivers",
+      description: `Assign drivers dialog for area ${areaId} would open here`,
+    })
+    // TODO: Implement assign drivers dialog
+  }
+
+  const handleRemove = (areaId: string, areaName: string) => {
+    if (confirm(`Are you sure you want to remove ${areaName}?`)) {
+      setAreas(areas.filter(area => area.id !== areaId))
+      toast({
+        title: "Area Removed",
+        description: `${areaName} has been removed successfully.`,
+        variant: "destructive",
+      })
+    }
+  }
+
   return (
     <>
       <div className="flex justify-between items-center mb-4">
         <div>
-            <Button>
+            <Button onClick={handleAddNewArea} className="bg-green-600 hover:bg-green-700">
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add New Area
             </Button>
         </div>
-         <Button variant="outline">
+         <Button variant="outline" onClick={handleViewCoverageMap}>
             <Map className="h-4 w-4 mr-2" />
             View Coverage Map
         </Button>
@@ -102,9 +145,9 @@ export default function AreasTableClient({ initialAreas }: AreasTableClientProps
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Assign Drivers</DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive">
+                    <DropdownMenuItem onClick={() => handleEdit(area.id)}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleAssignDrivers(area.id)}>Assign Drivers</DropdownMenuItem>
+                    <DropdownMenuItem className="text-destructive" onClick={() => handleRemove(area.id, area.name)}>
                       Remove
                     </DropdownMenuItem>
                   </DropdownMenuContent>

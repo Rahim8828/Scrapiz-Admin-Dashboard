@@ -52,6 +52,30 @@ export default function ServiceOrdersPage() {
     setIsDetailsOpen(true);
   };
 
+  const handleConfirmOrder = (orderId: string) => {
+    alert(`Order ${orderId} confirmed successfully!`);
+    // TODO: Implement order confirmation logic
+  };
+
+  const handleAssignAgent = (orderId: string) => {
+    alert(`Assign agent dialog for order ${orderId}`);
+    // TODO: Implement agent assignment dialog
+  };
+
+  const handleMarkComplete = (orderId: string) => {
+    if (confirm('Mark this order as completed?')) {
+      alert(`Order ${orderId} marked as completed!`);
+      // TODO: Implement mark complete logic
+    }
+  };
+
+  const handleCancelOrder = (orderId: string) => {
+    if (confirm('Are you sure you want to cancel this order?')) {
+      alert(`Order ${orderId} cancelled`);
+      // TODO: Implement cancel order logic
+    }
+  };
+
   // Get unique services
   const uniqueServices = useMemo(() => {
     return Array.from(new Set(serviceOrders.map(o => o.service)));
@@ -367,19 +391,19 @@ export default function ServiceOrdersPage() {
                       View Details
                     </Button>
                     {order.status === 'Pending' && (
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => handleConfirmOrder(order.id)}>
                         <CheckCircle2 className="h-4 w-4 mr-1" />
                         Confirm Order
                       </Button>
                     )}
                     {order.status === 'Confirmed' && (
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => handleAssignAgent(order.id)}>
                         <User className="h-4 w-4 mr-1" />
                         Assign Agent
                       </Button>
                     )}
                     {order.status === 'In Progress' && (
-                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => handleMarkComplete(order.id)}>
                         <CheckCircle2 className="h-4 w-4 mr-1" />
                         Mark Complete
                       </Button>
@@ -562,24 +586,24 @@ export default function ServiceOrdersPage() {
               <div className="flex gap-2 pt-4 border-t">
                 {selectedOrder.status === 'Pending' && (
                   <>
-                    <Button className="flex-1 bg-green-600 hover:bg-green-700">
+                    <Button className="flex-1 bg-green-600 hover:bg-green-700" onClick={() => handleConfirmOrder(selectedOrder.id)}>
                       <CheckCircle2 className="h-4 w-4 mr-2" />
                       Confirm Order
                     </Button>
-                    <Button variant="outline" className="flex-1">
+                    <Button variant="outline" className="flex-1" onClick={() => handleCancelOrder(selectedOrder.id)}>
                       <XCircle className="h-4 w-4 mr-2" />
                       Cancel Order
                     </Button>
                   </>
                 )}
                 {selectedOrder.status === 'Confirmed' && (
-                  <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
+                  <Button className="flex-1 bg-blue-600 hover:bg-blue-700" onClick={() => handleAssignAgent(selectedOrder.id)}>
                     <User className="h-4 w-4 mr-2" />
                     Assign Agent
                   </Button>
                 )}
                 {selectedOrder.status === 'In Progress' && (
-                  <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700">
+                  <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700" onClick={() => handleMarkComplete(selectedOrder.id)}>
                     <CheckCircle2 className="h-4 w-4 mr-2" />
                     Mark as Completed
                   </Button>
