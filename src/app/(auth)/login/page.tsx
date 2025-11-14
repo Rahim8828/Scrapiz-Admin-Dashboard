@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,8 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Recycle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import scrapizLogo from "@/assets/scrapiz-logo.png";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,7 +28,14 @@ export default function LoginPage() {
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader>
           <div className="flex items-center justify-center mb-4">
-             <Recycle className="h-10 w-10 text-primary" />
+            <Image 
+              src={scrapizLogo} 
+              alt="Scrapiz Logo" 
+              width={120} 
+              height={120}
+              className="object-contain"
+              priority
+            />
           </div>
           <CardTitle className="text-2xl text-center">Scrapiz Admin</CardTitle>
           <CardDescription className="text-center">
@@ -42,7 +50,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder=""
                   required
                 />
               </div>

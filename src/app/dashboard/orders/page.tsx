@@ -31,15 +31,17 @@ import { Input } from "@/components/ui/input"
 import { orders as initialOrders, users, scrapCategories } from "@/lib/data"
 import OrdersTableClient from "@/components/dashboard/orders-table-client"
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Order, OrderStatus } from "@/lib/types";
 import NewOrderDialog from "@/components/dashboard/new-order-dialog";
 import { Button } from "@/components/ui/button";
 
 export default function OrdersPage() {
+  const searchParams = useSearchParams();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(initialOrders);
   const [activeTab, setActiveTab] = useState<OrderStatus | "all">("all");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(searchParams?.get('search') || "");
   const [filters, setFilters] = useState({
     category: [] as string[],
     agent: [] as string[],
@@ -101,9 +103,75 @@ export default function OrdersPage() {
 
   const agents = users.filter(u => u.role === 'agent');
 
+  const stats = {
+    total: orders.length,
+    pending: orders.filter(o => o.status === 'pending').length,
+    assigned: orders.filter(o => o.status === 'assigned').length,
+    completed: orders.filter(o => o.status === 'completed').length,
+    cancelled: orders.filter(o => o.status === 'cancelled').length,
+    revenue: orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0),
+    weight: orders.reduce((sum, o) => sum + (o.finalWeight || 0), 0)
+  };
+
   return (
-    <Tabs defaultValue="all" onValueChange={(value) => setActiveTab(value as OrderStatus | 'all')}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-green-900 dark:text-green-100">Scrap Orders</h2>
+          <p className="text-muted-foreground mt-1">Manage all scrap pickup orders and assignments</p>
+        </div>
+        <NewOrderDialog 
+          sellers={users.filter(u => u.role === 'seller')} 
+          onOrderCreate={handleAddOrder}
+        />
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white dark:from-green-950 dark:to-background hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('all')}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300">Total Orders</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-green-900 dark:text-green-100">{stats.total}</div>
+            <p className="text-xs text-muted-foreground mt-1">All time</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950 dark:to-background hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('pending')}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-orange-700 dark:text-orange-300">Pending</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-orange-900 dark:text-orange-100">{stats.pending}</div>
+            <p className="text-xs text-muted-foreground mt-1">Needs assignment</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-background hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('assigned')}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300">Assigned</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-blue-900 dark:text-blue-100">{stats.assigned}</div>
+            <p className="text-xs text-muted-foreground mt-1">In progress</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950 dark:to-background hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('completed')}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Completed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">{stats.completed}</div>
+            <p className="text-xs text-muted-foreground mt-1">Successfully done</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as OrderStatus | 'all')}>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <TabsList className="w-full sm:w-auto">
           <TabsTrigger value="all" className="flex-1 sm:flex-none">All</TabsTrigger>
           <TabsTrigger value="pending" className="flex-1 sm:flex-none">Pending</TabsTrigger>
@@ -239,5 +307,6 @@ export default function OrdersPage() {
         </Card>
       </TabsContent>
     </Tabs>
+    </div>
   )
 }

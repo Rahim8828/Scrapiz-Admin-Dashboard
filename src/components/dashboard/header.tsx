@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import {
   Bell,
   Home,
@@ -15,8 +16,8 @@ import {
   Settings,
   User,
   CreditCard,
+  LogOut,
 } from "lucide-react";
-import Image from 'next/image';
 
 import {
   Breadcrumb,
@@ -37,15 +38,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Navigation from "./navigation";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-
-const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
   const pageTitle = pathname.split("/").pop()?.replace(/-/g, ' ') || 'dashboard';
+
+  const handleSettings = () => {
+    router.push('/dashboard/authentication');
+  };
+
+  const handleLogout = () => {
+    // Clear any stored auth data
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userRole');
+    }
+    router.push('/login');
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to orders page with search query
+      router.push(`/dashboard/orders?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -56,7 +77,8 @@ export default function Header() {
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs p-0">
+        <SheetContent side="left" className="sm:max-w-xs p-0" aria-describedby="navigation-description">
+          <div className="sr-only" id="navigation-description">Navigation menu</div>
           <Navigation />
         </SheetContent>
       </Sheet>
@@ -64,7 +86,7 @@ export default function Header() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="#">Dashboard</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -73,40 +95,38 @@ export default function Header() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="relative ml-auto flex-1 md:grow-0">
+      <form onSubmit={handleSearch} className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search..."
+          placeholder="Search orders, users..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full rounded-lg bg-secondary pl-8 md:w-[200px] lg:w-[320px]"
         />
-      </div>
+      </form>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             size="icon"
-            className="overflow-hidden rounded-full"
+            className="rounded-full"
           >
-            {userAvatar && (
-              <Image
-                src={userAvatar.imageUrl}
-                width={40}
-                height={40}
-                alt="Avatar"
-                className="overflow-hidden rounded-full"
-                data-ai-hint={userAvatar.imageHint}
-              />
-            )}
+            <User className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSettings} className="cursor-pointer">
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

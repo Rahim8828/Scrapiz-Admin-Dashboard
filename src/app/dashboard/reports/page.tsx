@@ -47,6 +47,16 @@ export default function ReportsPage() {
     .filter(u => u.role === 'agent')
     .sort((a, b) => (b.totalOrders || 0) - (a.totalOrders || 0))
     .slice(0, 5);
+
+  const handleFilterByDate = () => {
+    alert('Date filter dialog would open here');
+    // TODO: Implement date filter
+  };
+
+  const handleExport = () => {
+    alert('Export report functionality would trigger here');
+    // TODO: Implement export to PDF/CSV
+  };
     
   const recentCustomers = users
     .filter(u => u.role === 'seller')
@@ -64,11 +74,11 @@ export default function ReportsPage() {
           <TabsTrigger value="agents">Agents</TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleFilterByDate}>
                 <Calendar className="mr-2 h-4 w-4" />
                 Filter by Date
             </Button>
-          <Button>
+          <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700">
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>

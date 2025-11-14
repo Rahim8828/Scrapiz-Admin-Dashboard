@@ -285,94 +285,103 @@ export default function ServiceOrdersPage() {
           {filteredOrders.map(order => {
             const StatusIcon = statusIcons[order.status as keyof typeof statusIcons];
             return (
-              <Card key={order.id} className="hover:shadow-lg transition-all duration-200 border-green-100 hover:border-green-300">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
+              <Card key={order.id} className="hover:shadow-xl transition-all duration-300 border-2 border-green-100 hover:border-green-400 bg-gradient-to-br from-white to-green-50/30 dark:from-background dark:to-green-950/10">
+                <CardHeader className="pb-4 bg-gradient-to-r from-green-50 to-transparent dark:from-green-950/20 dark:to-transparent">
+                  <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Wrench className="h-5 w-5 text-green-600" />
-                        <CardTitle className="text-lg text-green-900 dark:text-green-100">
-                          {order.service}
-                        </CardTitle>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="h-10 w-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                          <Wrench className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg font-bold text-green-900 dark:text-green-100">
+                            {order.service}
+                          </CardTitle>
+                          <CardDescription className="flex items-center gap-2 mt-0.5">
+                            <span className="font-medium">#{order.id}</span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {order.date} • {order.time}
+                            </span>
+                          </CardDescription>
+                        </div>
                       </div>
-                      <CardDescription className="flex items-center gap-2">
-                        <span>Order #{order.id}</span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {order.date} at {order.time}
-                        </span>
-                      </CardDescription>
                     </div>
                     <Badge 
                       variant={statusColors[order.status as keyof typeof statusColors]}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 text-sm px-3 py-1.5"
                     >
-                      <StatusIcon className="h-3 w-3" />
+                      <StatusIcon className="h-3.5 w-3.5" />
                       {order.status}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <CardContent className="pt-4">
+                  <div className="grid md:grid-cols-3 gap-6 mb-5">
                     {/* Customer Info */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Customer</h4>
-                      <div className="space-y-1.5">
+                    <div className="space-y-3 p-3 rounded-lg bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900">
+                      <h4 className="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide flex items-center gap-1.5">
+                        <User className="h-3.5 w-3.5" />
+                        Customer
+                      </h4>
+                      <div className="space-y-2">
                         <div className="flex items-center gap-2 text-sm">
-                          <User className="h-4 w-4 text-green-600 flex-shrink-0" />
-                          <span className="font-medium truncate">{order.customerName}</span>
+                          <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center flex-shrink-0">
+                            <User className="h-4 w-4 text-blue-600" />
+                          </div>
+                          <span className="font-semibold truncate text-blue-900 dark:text-blue-100">{order.customerName}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Phone className="h-4 w-4 flex-shrink-0" />
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground pl-10">
+                          <Phone className="h-3.5 w-3.5 flex-shrink-0" />
                           <span>{order.phone}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Mail className="h-4 w-4 flex-shrink-0" />
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground pl-10">
+                          <Mail className="h-3.5 w-3.5 flex-shrink-0" />
                           <span className="truncate">{order.email}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Location Info */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Location</h4>
-                      <div className="space-y-1.5">
+                    <div className="space-y-3 p-3 rounded-lg bg-purple-50/50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900">
+                      <h4 className="text-xs font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wide flex items-center gap-1.5">
+                        <MapPin className="h-3.5 w-3.5" />
+                        Location
+                      </h4>
+                      <div className="space-y-2">
                         <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                          <span className="line-clamp-2">{order.address}</span>
+                          <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 text-purple-600" />
+                          <span className="line-clamp-2 leading-relaxed">{order.address}</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
-                          <Building className="h-4 w-4 text-green-600 flex-shrink-0" />
-                          <span className="font-medium">{order.propertyType}</span>
+                          <Building className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                          <span className="font-semibold text-purple-900 dark:text-purple-100">{order.propertyType}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Pricing Info */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Pricing</h4>
-                      <div className="space-y-1.5">
+                    <div className="space-y-3 p-3 rounded-lg bg-green-50/50 dark:bg-green-950/20 border border-green-100 dark:border-green-900">
+                      <h4 className="text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide flex items-center gap-1.5">
+                        <DollarSign className="h-3.5 w-3.5" />
+                        Pricing
+                      </h4>
+                      <div className="space-y-2">
                         {order.estimatedPrice && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <DollarSign className="h-4 w-4 text-green-600 flex-shrink-0" />
-                            <div>
-                              <div className="font-semibold text-green-700 dark:text-green-400">
-                                ₹{order.estimatedPrice.toLocaleString()}
-                              </div>
-                              <div className="text-xs text-muted-foreground">Estimated</div>
-                            </div>
+                          <div className="flex items-center justify-between p-2 rounded bg-white dark:bg-background">
+                            <span className="text-xs text-muted-foreground">Estimated</span>
+                            <span className="font-bold text-green-700 dark:text-green-400">
+                              ₹{order.estimatedPrice.toLocaleString()}
+                            </span>
                           </div>
                         )}
                         {order.finalPrice && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <DollarSign className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                            <div>
-                              <div className="font-bold text-emerald-700 dark:text-emerald-400">
-                                ₹{order.finalPrice.toLocaleString()}
-                              </div>
-                              <div className="text-xs text-muted-foreground">Final Price</div>
-                            </div>
+                          <div className="flex items-center justify-between p-2 rounded bg-emerald-100 dark:bg-emerald-900/30">
+                            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">Final Price</span>
+                            <span className="font-bold text-lg text-emerald-700 dark:text-emerald-400">
+                              ₹{order.finalPrice.toLocaleString()}
+                            </span>
                           </div>
                         )}
                       </div>
@@ -380,31 +389,31 @@ export default function ServiceOrdersPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-wrap gap-2 pt-3 border-t">
+                  <div className="flex flex-wrap gap-2 pt-4 border-t-2 border-green-100">
                     <Button 
                       size="sm" 
                       variant="outline" 
                       onClick={() => handleViewDetails(order)}
-                      className="hover:bg-green-50 hover:text-green-700 hover:border-green-300"
+                      className="hover:bg-green-50 hover:text-green-700 hover:border-green-400 transition-all"
                     >
-                      <FileText className="h-4 w-4 mr-1" />
+                      <FileText className="h-4 w-4 mr-1.5" />
                       View Details
                     </Button>
                     {order.status === 'Pending' && (
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => handleConfirmOrder(order.id)}>
-                        <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <Button size="sm" className="bg-green-600 hover:bg-green-700 shadow-sm hover:shadow-md transition-all" onClick={() => handleConfirmOrder(order.id)}>
+                        <CheckCircle2 className="h-4 w-4 mr-1.5" />
                         Confirm Order
                       </Button>
                     )}
                     {order.status === 'Confirmed' && (
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => handleAssignAgent(order.id)}>
-                        <User className="h-4 w-4 mr-1" />
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md transition-all" onClick={() => handleAssignAgent(order.id)}>
+                        <User className="h-4 w-4 mr-1.5" />
                         Assign Agent
                       </Button>
                     )}
                     {order.status === 'In Progress' && (
-                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => handleMarkComplete(order.id)}>
-                        <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all" onClick={() => handleMarkComplete(order.id)}>
+                        <CheckCircle2 className="h-4 w-4 mr-1.5" />
                         Mark Complete
                       </Button>
                     )}

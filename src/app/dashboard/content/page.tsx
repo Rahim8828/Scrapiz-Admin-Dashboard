@@ -20,6 +20,33 @@ import { Textarea } from "@/components/ui/textarea"
 import { Upload, PlusCircle, Trash2 } from "lucide-react"
 
 export default function ContentPage() {
+  const handleSelectFile = () => {
+    alert('File selection dialog would open here');
+    // TODO: Implement file upload
+  };
+
+  const handleDeleteBanner = (bannerId: string) => {
+    if (confirm('Are you sure you want to delete this banner?')) {
+      alert(`Banner ${bannerId} deleted`);
+      // TODO: Implement delete banner
+    }
+  };
+
+  const handleSaveGuidelines = () => {
+    alert('Guidelines saved successfully!');
+    // TODO: Implement save guidelines
+  };
+
+  const handleAddFAQ = () => {
+    alert('Add FAQ dialog would open here');
+    // TODO: Implement add FAQ
+  };
+
+  const handleSaveAllContent = () => {
+    alert('All content saved successfully!');
+    // TODO: Implement save all content
+  };
+
   return (
     <div className="grid gap-6">
       {/* Banner Management */}
@@ -35,18 +62,18 @@ export default function ContentPage() {
             <div className="relative group flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground p-4 text-center">
                 <Upload className="h-8 w-8 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground">Drop image here or</p>
-                <Button variant="outline" size="sm">Select File</Button>
+                <Button variant="outline" size="sm" onClick={handleSelectFile}>Select File</Button>
             </div>
              <div className="relative group">
                 <img src="https://picsum.photos/seed/banner1/600/300" alt="Banner 1" className="rounded-lg object-cover aspect-video"/>
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="destructive" size="icon"><Trash2 className="h-4 w-4"/></Button>
+                    <Button variant="destructive" size="icon" onClick={() => handleDeleteBanner('banner1')}><Trash2 className="h-4 w-4"/></Button>
                 </div>
             </div>
              <div className="relative group">
                 <img src="https://picsum.photos/seed/banner2/600/300" alt="Banner 2" className="rounded-lg object-cover aspect-video"/>
                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="destructive" size="icon"><Trash2 className="h-4 w-4"/></Button>
+                    <Button variant="destructive" size="icon" onClick={() => handleDeleteBanner('banner2')}><Trash2 className="h-4 w-4"/></Button>
                 </div>
             </div>
           </div>
@@ -73,7 +100,7 @@ export default function ContentPage() {
           </div>
         </CardContent>
         <CardFooter className="border-t px-6 py-4">
-          <Button>Save Guidelines</Button>
+          <Button onClick={handleSaveGuidelines} className="bg-green-600 hover:bg-green-700">Save Guidelines</Button>
         </CardFooter>
       </Card>
 
@@ -106,7 +133,7 @@ export default function ContentPage() {
           </Accordion>
         </CardContent>
         <CardFooter className="border-t px-6 py-4 flex justify-end">
-            <Button>
+            <Button onClick={handleAddFAQ} className="bg-green-600 hover:bg-green-700">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Add FAQ
             </Button>
@@ -151,7 +178,7 @@ export default function ContentPage() {
             </div>
           </CardContent>
            <CardFooter className="border-t px-6 py-4">
-            <Button>Save All Content</Button>
+            <Button onClick={handleSaveAllContent} className="bg-green-600 hover:bg-green-700">Save All Content</Button>
           </CardFooter>
         </Card>
     </div>

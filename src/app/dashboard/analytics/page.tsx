@@ -60,17 +60,90 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-green-900 dark:text-green-100">Advanced Analytics</h2>
-        <p className="text-muted-foreground">Comprehensive business insights and metrics</p>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Advanced Analytics</h2>
+          <p className="text-muted-foreground">Comprehensive business insights and metrics</p>
+        </div>
+      </div>
+
+      {/* Quick Stats Overview */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Total Revenue
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">₹{totalCombinedRevenue.toLocaleString()}</div>
+            <p className="text-xs text-purple-100 flex items-center gap-1 mt-1">
+              <TrendingUp className="h-3 w-3" />
+              +24.5% from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Total Users
+            </CardTitle>
+            <Users className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{users.length}</div>
+            <p className="text-xs text-green-100">Active platform users</p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Total Orders
+            </CardTitle>
+            <ShoppingCart className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{orders.length + serviceOrders.length}</div>
+            <p className="text-xs text-orange-100">Scrap + Service orders</p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">
+              Referrals
+            </CardTitle>
+            <Gift className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{referrals.length}</div>
+            <p className="text-xs text-pink-100">{referralConversionRate}% conversion</p>
+          </CardContent>
+        </Card>
       </div>
 
       <Tabs defaultValue="revenue" className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="revenue">Revenue</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="referrals">Referrals</TabsTrigger>
-          <TabsTrigger value="agents">Agents</TabsTrigger>
+          <TabsTrigger value="revenue">💰 Revenue</TabsTrigger>
+          <TabsTrigger value="users">👥 Users</TabsTrigger>
+          <TabsTrigger value="referrals">🎁 Referrals</TabsTrigger>
+          <TabsTrigger value="agents">🚚 Agents</TabsTrigger>
         </TabsList>
 
         {/* Revenue Tab */}

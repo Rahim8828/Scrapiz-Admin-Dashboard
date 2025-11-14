@@ -14,14 +14,12 @@ import {
   ShoppingCart,
   Users,
   CreditCard,
-  LineChart,
   Settings,
   Truck,
   Map,
   Wrench,
   Gift,
   Package,
-  Layers,
   BarChart3,
   Shield,
 } from 'lucide-react';
@@ -29,16 +27,15 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
+  { href: '/dashboard/authentication', icon: Shield, label: 'Auth' },
   { href: '/dashboard/orders', icon: ShoppingCart, label: 'Orders' },
   { href: '/dashboard/service-orders', icon: Wrench, label: 'Services' },
-  { href: '/dashboard/users', icon: Users, label: 'Users' },
-  { href: '/dashboard/agents', icon: Truck, label: 'Agents' },
-  { href: '/dashboard/referrals', icon: Gift, label: 'Referrals' },
-  { href: '/dashboard/categories', icon: Layers, label: 'Categories' },
-  { href: '/dashboard/items', icon: Package, label: 'Items' },
-  { href: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
-  { href: '/dashboard/authentication', icon: Shield, label: 'Auth' },
+  { href: '/dashboard/catalog', icon: Package, label: 'Catalog' },
   { href: '/dashboard/areas', icon: Map, label: 'Areas' },
+  { href: '/dashboard/agents', icon: Truck, label: 'Agents' },
+  { href: '/dashboard/users', icon: Users, label: 'Users' },
+  { href: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
+  { href: '/dashboard/referrals', icon: Gift, label: 'Referrals' },
   { href: '/dashboard/payments', icon: CreditCard, label: 'Payments' },
 ];
 

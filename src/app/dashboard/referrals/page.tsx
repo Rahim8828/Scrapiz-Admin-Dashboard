@@ -20,76 +20,137 @@ export default function ReferralsPage() {
     .sort((a, b) => (b.totalReferrals || 0) - (a.totalReferrals || 0))
     .slice(0, 5);
 
+  const conversionRate = ((stats.completedReferrals / stats.totalReferrals) * 100).toFixed(1);
+  const avgPerUser = (referrals.length / referrerStats.length).toFixed(1);
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-green-900 dark:text-green-100">Referral Management</h2>
-        <p className="text-muted-foreground">Track and manage the referral program</p>
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Referral Management</h2>
+          <p className="text-muted-foreground">Track and manage the referral program</p>
+        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card className="border-green-100">
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">Total Referrals</CardTitle>
-            <Users className="h-4 w-4 text-green-600" />
+            <CardTitle className="text-sm font-medium text-white">Total Referrals</CardTitle>
+            <Users className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100">{stats.totalReferrals}</div>
-            <p className="text-xs text-green-700">All time</p>
+            <div className="text-2xl font-bold text-white">{stats.totalReferrals}</div>
+            <p className="text-xs text-purple-100">All time</p>
           </CardContent>
         </Card>
 
-        <Card className="border-green-100">
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium text-white">Completed</CardTitle>
+            <CheckCircle className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{stats.completedReferrals}</div>
+            <p className="text-xs text-green-100">Successful referrals</p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Pending</CardTitle>
+            <Clock className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{stats.pendingReferrals}</div>
+            <p className="text-xs text-orange-100">Awaiting completion</p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Bonus Paid</CardTitle>
+            <DollarSign className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">₹{stats.totalBonusPaid}</div>
+            <p className="text-xs text-cyan-100">Lifetime</p>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className="transition-all hover:shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Pending Bonus</CardTitle>
+            <Gift className="h-4 w-4 text-white" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">₹{stats.pendingBonuses}</div>
+            <p className="text-xs text-pink-100">To be paid</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Performance Metrics */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="border-purple-200 bg-purple-50/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+            <TrendingUp className="h-4 w-4 text-purple-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-purple-700">{conversionRate}%</div>
+            <p className="text-xs text-purple-600">Referrals completed</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-blue-200 bg-blue-50/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Avg per User</CardTitle>
+            <Users className="h-4 w-4 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-700">{avgPerUser}</div>
+            <p className="text-xs text-blue-600">Referrals per active user</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-green-200 bg-green-50/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Referrers</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100">{stats.completedReferrals}</div>
-            <p className="text-xs text-green-700">Successful referrals</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-green-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">Pending</CardTitle>
-            <Clock className="h-4 w-4 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100">{stats.pendingReferrals}</div>
-            <p className="text-xs text-orange-700">Awaiting completion</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-green-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">Bonus Paid</CardTitle>
-            <DollarSign className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100">₹{stats.totalBonusPaid}</div>
-            <p className="text-xs text-green-700">Lifetime</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-green-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-900 dark:text-green-100">Pending Bonus</CardTitle>
-            <Gift className="h-4 w-4 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-900 dark:text-green-100">₹{stats.pendingBonuses}</div>
-            <p className="text-xs text-orange-700">To be paid</p>
+            <div className="text-2xl font-bold text-green-700">{referrerStats.length}</div>
+            <p className="text-xs text-green-600">Users with referrals</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Recent Referrals */}
-        <Card className="border-green-100">
+        <Card className="border-green-100 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-green-900 dark:text-green-100">Recent Referrals</CardTitle>
+            <CardTitle className="text-green-900 dark:text-green-100 flex items-center gap-2">
+              <Gift className="h-5 w-5 text-green-600" />
+              Recent Referrals
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -121,34 +182,43 @@ export default function ReferralsPage() {
         </Card>
 
         {/* Top Referrers */}
-        <Card className="border-green-100">
+        <Card className="border-green-100 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-green-900 dark:text-green-100">
               <TrendingUp className="h-5 w-5 text-green-600" />
-              Top Referrers
+              Top Referrers Leaderboard
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {referrerStats.map((user, index) => (
-                <div key={user.id} className="flex items-center gap-4 p-3 border border-green-100 rounded-lg">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">
-                    #{index + 1}
+              {referrerStats.map((user, index) => {
+                const medalColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
+                const bgColors = ['bg-yellow-100', 'bg-gray-100', 'bg-orange-100'];
+                const textColors = ['text-yellow-700', 'text-gray-700', 'text-orange-700'];
+                
+                return (
+                  <div key={user.id} className="flex items-center gap-4 p-3 border border-green-100 rounded-lg hover:shadow-md transition-shadow">
+                    <div 
+                      className={`flex items-center justify-center w-10 h-10 rounded-full ${index < 3 ? bgColors[index] : 'bg-green-100'} ${index < 3 ? textColors[index] : 'text-green-700'} font-bold text-sm`}
+                      style={index < 3 ? { boxShadow: `0 0 10px ${medalColors[index]}40` } : {}}
+                    >
+                      {index < 3 ? ['🥇', '🥈', '🥉'][index] : `#${index + 1}`}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium">{user.name}</div>
+                      <div className="text-xs text-muted-foreground">{user.referralCode}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-green-600">{user.totalReferrals}</div>
+                      <div className="text-xs text-muted-foreground">Referrals</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-semibold text-green-700">₹{(user.totalReferrals || 0) * 20}</div>
+                      <div className="text-xs text-muted-foreground">Earned</div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-medium">{user.name}</div>
-                    <div className="text-xs text-muted-foreground">{user.referralCode}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-green-600">{user.totalReferrals}</div>
-                    <div className="text-xs text-muted-foreground">Referrals</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-green-700">₹{(user.totalReferrals || 0) * 20}</div>
-                    <div className="text-xs text-muted-foreground">Earned</div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

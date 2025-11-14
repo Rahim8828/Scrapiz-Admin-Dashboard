@@ -72,3 +72,63 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile-friendly responsive utilities */
+@layer utilities {
+  /* Prevent horizontal scroll on mobile */
+  .mobile-container {
+    @apply max-w-full overflow-x-hidden;
+  }
+  
+  /* Better touch targets for mobile */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Responsive text sizes */
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  /* Mobile-friendly cards */
+  .card-mobile {
+    @apply rounded-lg p-3 sm:p-4 md:p-6;
+  }
+  
+  /* Better spacing on mobile */
+  .space-mobile {
+    @apply space-y-3 sm:space-y-4 md:space-y-6;
+  }
+  
+  /* Responsive grid */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6;
+  }
+}
+
+/* Table responsive improvements */
+@layer components {
+  .table-container {
+    @apply overflow-x-auto -mx-2 sm:mx-0;
+  }
+  
+  .table-container table {
+    @apply min-w-full;
+  }
+  
+  /* Hide less important columns on mobile */
+  @media (max-width: 640px) {
+    .hide-mobile {
+      @apply hidden;
+    }
+  }
+  
+  /* Stack cards vertically on mobile */
+  .card-stack {
+    @apply flex flex-col gap-3 sm:gap-4;
+  }
+}
